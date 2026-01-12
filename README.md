@@ -2,7 +2,7 @@
 
 A simple daily reset web app designed to help users refocus, ground themselves, and start the day with intention.
 
-🔗 **Live App:** https://github.com/deloachstudios/morning-reset.git
+🔗 **Live App:** https://deloachstudios.github.io/morning-reset/
 
 ## About
 Morning Reset is a lightweight front-end application built using HTML, CSS, and JavaScript. It was created as part of a certification project and is part of the ongoing digital tools ecosystem by **DeLoach Studios**.
