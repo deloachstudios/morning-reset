@@ -1,19 +1,21 @@
-# The Morning Reset
+# Morning Reset App
 
-A lightweight, browser-based daily reset tool (mood + message + quotes + actions + journaling).
+A simple daily reset web app designed to help users refocus, ground themselves, and start the day with intention.
 
-**© 2026 DeLoach Studios — All Rights Reserved.**  
-See `LICENSE.txt`, `terms.html`, and `privacy.html`.
+🔗 **Live App:** https://YOURUSERNAME.github.io/YOUR-REPO-NAME/
 
-## What’s inside
-- `index.html` — app UI
-- `style.css` — styling
-- `script.js` — logic
-- `terms.html` / `privacy.html` — legal pages
+## About
+Morning Reset is a lightweight front-end application built using HTML, CSS, and JavaScript. It was created as part of a certification project and is part of the ongoing digital tools ecosystem by **DeLoach Studios**.
 
-## Hosting (free)
-Recommended: GitHub Pages or Netlify.
+## Features
+- Daily reset prompts
+- Clean, distraction-free interface
+- Runs entirely in the browser
+- No user data collection
 
-## Notes on “steal-proof”
-Front-end web apps are delivered to the browser, so code can be viewed by motivated users.
-This project includes branding + license + terms to set clear usage rules and discourage redistribution.
+## Usage
+This tool is intended for general wellness and reflection purposes only. It is not medical or professional advice.
+
+## License
+© 2026 DeLoach Studios. All Rights Reserved.  
+Unauthorized copying, redistribution, or reuse of this project is not permitted.
