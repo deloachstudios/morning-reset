@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Morning Reset</title>
+  
+  <meta name="description" content="The Morning Reset — a quick daily reset tool for mood, message, quotes, actions, and journaling.">
+  <meta name="author" content="DeLoach Studios">
+  <meta name="theme-color" content="#0b0f14">
+  <meta property="og:title" content="The Morning Reset">
+  <meta property="og:description" content="Pick your vibe. Lock your reset. Move like you mean it.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="social-card.png">
+  <meta property="og:url" content="">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="app">
+    <header class="top">
+      <h1 class="title">The Morning Reset</h1>
+      <div class="brandline">by <a href="https://www.deloachstudios.com" target="_blank" rel="noopener">DeLoach Studios</a></div>
+      <p class="subtitle">Pick your vibe. Lock your reset. Move like you mean it.</p>
+    </header>
+
+    <main class="grid">
+      <!-- LEFT: Mood picker -->
+      <section class="card">
+        <h2 class="card-title">Choose up to 3 moods</h2>
+        <p class="card-subtitle">Tap to select. Tap again to unselect.</p>
+
+        <div id="hintBar" class="hint-bar hidden" role="note" aria-live="polite">
+          <div class="hint-text">
+            Pick up to <strong>3</strong> moods, set intensity, then tap <strong>Lock In My Reset</strong>.
+          </div>
+          <button id="hintCloseBtn" class="hint-close" type="button" aria-label="Dismiss tip">✕</button>
+        </div>
+
+        <div class="mood-grid" id="moodGrid" aria-label="Mood selection buttons"></div>
+
+        <div class="limit-row">
+          <div id="limitMsg" class="limit-msg" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="actions-row">
+          <button id="goBtn" class="btn primary">Lock In My Reset</button>
+          <button id="changeMoodsBtn" class="btn tiny ghost hidden" type="button">Change moods</button>
+          <button id="resetBtn" class="btn ghost">Reset</button>
+        </div>
+
+        <div class="after-go-row hidden" id="afterGoRow">
+          <button id="saveBtn" class="btn secondary">Save Today</button>
+        </div>
+      </section>
+
+      <!-- RIGHT: Selected + Results -->
+      <section class="card">
+        <div class="selected-head">
+          <div>
+            <h2 class="card-title">Selected</h2>
+            <p class="card-subtitle">Pick intensity for each selected mood.</p>
+          </div>
+
+          <div class="legend-right" aria-label="Intensity legend">
+            <div class="legend-pill"><span class="legend-label">Soft</span><span class="legend-desc">present, not
+                driving</span></div>
+            <div class="legend-pill"><span class="legend-label">Steady</span><span class="legend-desc">influencing
+                energy</span></div>
+            <div class="legend-pill"><span class="legend-label">Strong</span><span class="legend-desc">loud enough to
+                guide</span></div>
+          </div>
+        </div>
+
+        <div id="selectedList" class="selected-list hidden" aria-label="Selected moods list"></div>
+
+        <div id="resultsWrap" class="results-wrap hidden">
+          <div class="results-card" id="resultsCard">
+            <h3 class="results-title" id="modeLabel">—</h3>
+
+            <div class="result-block">
+              <div class="result-label">Message</div>
+              <div class="result-text" id="modeMessage">—</div>
+            </div>
+
+            <div class="result-block">
+              <div class="result-label">Quote</div>
+              <blockquote class="result-quote" id="modeQuote">—</blockquote>
+            </div>
+
+            <div class="result-block action-block">
+              <div class="result-label">Action</div>
+              <div class="result-text action-text" id="modeAction">—</div>
+
+              <div id="journalWrap" class="journal-wrap hidden">
+                <div class="journal-helper">You might want to jot this down.</div>
+                <textarea id="journalInput" class="journal-input" rows="5"
+                  placeholder="Optional: write it out here…"></textarea>
+              </div>
+
+              <div class="why-toggle-row">
+                <button id="whyToggleBtn" class="btn tiny hidden">Why this?</button>
+              </div>
+
+              <div id="whyWrap" class="why-wrap hidden">
+                <div class="why-title">Why this reset</div>
+                <div class="why-text" id="whyText">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Saved History -->
+      <section class="card full hidden" id="historySection">
+        <div class="history-head">
+          <button id="historyToggleBtn" class="history-toggle" type="button" aria-expanded="false">
+            <div class="history-title-wrap">
+              <div class="card-title">Saved History</div>
+              <div class="history-count" id="historyCountText">(0/30)</div>
+            </div>
+
+            <div id="historyPreview" class="history-preview hidden"></div>
+
+            <div class="history-chevron" id="historyChevron">▾</div>
+          </button>
+
+          <div class="history-actions hidden" id="historyActions">
+            <button id="toggleHistoryBtn" class="btn tiny">Show all (30)</button>
+
+            <div class="export-group">
+              <button id="copyExportBtn" class="btn tiny">Copy</button>
+              <button id="downloadExportBtn" class="btn tiny">Download</button>
+            </div>
+
+            <button id="clearSavedBtn" class="btn tiny danger">Clear Saved</button>
+          </div>
+        </div>
+
+        <div id="historyBody" class="history-body hidden">
+          <div id="historyList" class="history-list" aria-label="Saved entries list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Export Modal -->
+  <div id="exportOverlay" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="exportTitle">
+      <div class="modal-head">
+        <h3 id="exportTitle" class="modal-title">Export Saved Resets</h3>
+        <button id="exportCloseX" class="icon-btn" aria-label="Close export">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="radio-group" role="radiogroup" aria-label="Export options">
+          <label class="radio">
+            <input type="radio" name="exportScope" value="last7" checked />
+            <span>Last 7 entries</span>
+          </label>
+          <label class="radio">
+            <input type="radio" name="exportScope" value="all" />
+            <span>All saved (up to 30)</span>
+          </label>
+          <label class="radio">
+            <input type="radio" name="exportScope" value="choose" />
+            <span>Choose entries</span>
+          </label>
+        </div>
+
+        <div id="chooseWrap" class="choose-wrap hidden">
+          <div class="choose-actions">
+            <button id="selectAllBtn" class="btn tiny">Select all</button>
+            <button id="selectNoneBtn" class="btn tiny">Select none</button>
+          </div>
+          <div id="chooseList" class="choose-list" aria-label="Choose entries list"></div>
+        </div>
+
+        <div id="manualCopyWrap" class="manual-copy hidden">
+          <div class="manual-copy-title">Clipboard blocked — copy manually:</div>
+          <textarea id="manualCopyArea" class="manual-copy-area" rows="8"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button id="exportCancelBtn" class="btn ghost">Cancel</button>
+        <button id="exportPrimaryBtn" class="btn primary">Export</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 30-limit Modal -->
+  <div id="limitOverlay" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="limitTitle">
+      <div class="modal-head">
+        <h3 id="limitTitle" class="modal-title">You’re at 30 saved resets</h3>
+        <button id="limitCloseX" class="icon-btn" aria-label="Close">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="limit-p">
+          You can save up to <strong>30</strong> entries on this device.
+          Want to export first, or clear the oldest to make room?
+        </p>
+        <div class="limit-actions">
+          <button id="limitExportBtn" class="btn primary">Export</button>
+          <button id="limitClearOldestBtn" class="btn secondary">Clear oldest + Save</button>
+          <button id="limitCancelBtn" class="btn ghost">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-left">
+        <span class="footer-brand">© 2026 DeLoach Studios</span>
+        <span class="dot">•</span>
+        <a href="terms.html">Terms</a>
+        <span class="dot">•</span>
+        <a href="privacy.html">Privacy</a>
+        <span class="dot">•</span>
+        <a href="mailto:info@deloachstudios.com">Support</a>
+      </div>
+      <div class="footer-right">
+        <span class="small">Official version:</span>
+        <span class="small mono" id="site-url"></span>
+      </div>
+    </footer>
+  </div> <!-- /app -->
+
+  <script>
+    // Shows the current host so users can bookmark the official link
+    (function(){
+      var el=document.getElementById("site-url");
+      if(!el) return;
+      var url=window.location.origin + window.location.pathname.replace(/index\.html$/,"");
+      el.textContent=url;
+    })();
+  </script>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
